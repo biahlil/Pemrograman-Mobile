@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Dice Roller XML</string>
+    <string name="roller">Roll</string>
+    <string name="dice1">Dice 1</string>
+    <string name="dice2">Dice 2</string>
+    <string name="zonk">Anda belum beruntung!</string>
+    <string name="twins">Selamat, anda dapat dadu double!</string>
+</resources>
