@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">MovieList</string>
+    <string name="imdb">IMDB</string>
+    <string name="detail">Detail</string>
+    <string name="plot">Plot: </string>
+
+    <string name="venom_title">Venom: Let There Be Carnage</string>
+    <string name="venom_year">2021</string>
+    <string name="venom_detail">When Eddie Brock acquires the powers of a symbiote, he will have to release his alter-ego Venom to save his life.</string>
+    <string name="venom_imdb">https://www.imdb.com/title/tt7097896/</string>
+
+    <string name="kiki_title">Kiki\'s Delivery Service</string>
+    <string name="kiki_year">1989</string>
+    <string name="kiki_detail">Along with her black cat Jiji, Kiki settles in a seaside town and starts a high-flying delivery service.</string>
+    <string name="kiki_imdb">https://www.imdb.com/title/tt0097814/</string>
+
+    <string name="day_title">28 Days Later</string>
+    <string name="day_year">2002</string>
+    <string name="day_detail">Four weeks after a mysterious, incurable virus spreads throughout the United Kingdom, a handful of survivors try to find sanctuary.</string>
+    <string name="day_imdb">https://www.imdb.com/title/tt0289043/</string>
+
+    <string name="red_title">Turning Red</string>
+    <string name="red_year">2022</string>
+    <string name="red_detail">A thirteen-year-old girl named Mei Lee is torn between staying her mother\'s dutiful daughter and the changes of adolescence.</string>
+    <string name="red_imdb">https://www.imdb.com/title/tt8097030/</string>
+
+    <string name="vhs_title">V/H/S/2</string>
+    <string name="vhs_year">2013</string>
+    <string name="vhs_detail">Searching for a missing student, two private investigators break into his house and find a collection of VHS tapes.</string>
+    <string name="vhs_imdb">https://www.imdb.com/title/tt2450186/</string>
+
+    <string name="castle_title">Howl\'s Moving Castle</string>
+    <string name="castle_year">2004</string>
+    <string name="castle_detail">A timid young woman cursed into an old body must turn to a self‑indulgent yet insecure wizard and his ragtag companions in a moving castle to break the spell.</string>
+    <string name="castle_imdb">https://www.imdb.com/title/tt0347149/plotsummary/</string>
+
+</resources>

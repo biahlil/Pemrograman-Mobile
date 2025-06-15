@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JetClientState">
+    <option name="folders">
+      <list>
+        <folderState>
+          <option name="auth">
+            <authState>
+              <option name="type" value="BEARER" />
+            </authState>
+          </option>
+          <option name="environmentGroups">
+            <list>
+              <environmentGroupState>
+                <option name="name" value="Default" />
+              </environmentGroupState>
+            </list>
+          </option>
+          <option name="folders">
+            <list>
+              <folderState>
+                <option name="id" value="753c2364-018d-4d73-a1e4-01cf1480f0b8" />
+                <option name="name" value="MovieList Script" />
+                <option name="sortWeight" value="1000000" />
+                <option name="testSuite" value="true" />
+              </folderState>
+            </list>
+          </option>
+          <option name="id" value="3de0d985-9ee6-4d0e-b906-dab85eb30baa" />
+          <option name="name" value="MovieList" />
+          <option name="selectedEnvironmentIds">
+            <map>
+              <entry key="default" />
+            </map>
+          </option>
+          <option name="syncProperties">
+            <synchronizationPropertiesState>
+              <option name="autoSync" value="true" />
+              <option name="folderPath" value="C:\MobileGit\Modul 3\MovieListCompose\.jetclient" />
+            </synchronizationPropertiesState>
+          </option>
+        </folderState>
+      </list>
+    </option>
+    <option name="id" value="facc699a-e925-4859-85bf-587048fd2616" />
+    <option name="version" value="6" />
+  </component>
+</project>
