@@ -38,7 +38,7 @@ class MovieRepositoryImpl(
 
     override suspend fun getRandomMovie(): Flow<ResultOrError<List<Movie>>> = flow {
         try {
-            val dtoList = apiService.fetchAllMovies()              // may throw
+            val dtoList = apiService.fetchAllMovies()              // may throw exception
             val domainList = dtoList.map {
                 val detailDto = apiService.fetchMovieImdbById(it.id.toString())
                 it.toDomain()

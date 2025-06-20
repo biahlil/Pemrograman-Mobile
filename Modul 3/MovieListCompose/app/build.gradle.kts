@@ -37,6 +37,11 @@ android {
     buildFeatures {
         compose = true
     }
+    packagingOptions {
+        resources {
+            excludes += "META-INF/INDEX.LIST"
+        }
+    }
 }
 
 dependencies {

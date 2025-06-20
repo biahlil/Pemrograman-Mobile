@@ -40,11 +40,11 @@ fun MovieListScreen(
     ){
         items(movieList) { movie ->
             MovieCard(
-                image = movie.image,         // e.g. a drawable resource in your Movie model
-                titleText = movie.titleText,     // e.g. a string‑res ID in your Movie model
+                image = movie.image,
+                titleText = movie.titleText,
                 yearText = movie.yearText,
                 descriptionText = movie.descriptionText,
-                imdbOnclick = { imdbOnclick(movie) },
+                url = movie.imdbLink,
                 detailOnclick = { detailOnclick(movie) },
                 modifier = Modifier.fillMaxWidth()
             )

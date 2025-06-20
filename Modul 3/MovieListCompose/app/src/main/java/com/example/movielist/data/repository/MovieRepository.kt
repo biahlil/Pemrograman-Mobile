@@ -2,8 +2,9 @@ package com.example.movielist.data.repository
 
 import com.example.movielist.data.Result
 import com.example.movielist.domain.model.Movie
+import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {
-    suspend fun getMovie(postId: Int?): Result<Movie>
-    suspend fun getAllMovies(): Result<List<Movie>>
+    fun getMovie(postId: Int?): Flow<Result<Movie>>
+    suspend fun getAllMovies(): Flow<Result<List<Movie>>>
 }
