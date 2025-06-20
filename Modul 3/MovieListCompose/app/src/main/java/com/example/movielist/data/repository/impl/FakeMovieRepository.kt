@@ -14,7 +14,7 @@ class FakeMovieRepository : MovieRepository {
 
     override fun getMovie(postId: Int?): Flow<Result<Movie>> {
         return flow {
-            delay(200)
+            delay(1000)
 
             if (postId == null) {
                 emit(Result.Error(Exception("Movie ID can't be null")))
@@ -34,10 +34,10 @@ class FakeMovieRepository : MovieRepository {
     override suspend fun getAllMovies(): Flow<Result<List<Movie>>> {
         return flow {
             try {
-                delay(200)
+                delay(1000)
                 emit(Result.Success(movies))
             } catch (e: IOException) {
-                emit(Result.Error(Exception("Simulated Network Error")))
+                emit(Result.Error(Exception(e.message)))
             }
         }
     }

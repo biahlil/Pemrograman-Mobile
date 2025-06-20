@@ -1,8 +1,8 @@
 package com.example.movielist.ui.movielist
 
 import android.util.Log
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movielist.data.Result
@@ -14,8 +14,9 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 
-class MovieListViewModel : ViewModel() {
+class MovieListViewModel(
     val movieRepository : MovieRepository = FakeMovieRepository()
+) : ViewModel() {
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
@@ -33,8 +34,8 @@ class MovieListViewModel : ViewModel() {
 
             movieRepository.getAllMovies().collect { result ->
                 when (result) {
-                    is Result.Success<*> -> {
-                        _movieListState.value = MovieListState(movies = result.data)
+                    is Result.Success<List<Movie>> -> {
+                        _movieListState.value = MovieListState(movies = result.data, isLoading = false)
                         Log.d("MovieListViewModel", "getAllMovies: ${_movieListState.value}")
 
                     }
@@ -42,7 +43,7 @@ class MovieListViewModel : ViewModel() {
                         _movieListState.value = MovieListState(isLoading = false)
                         _eventFlow.emit(
                             UiEvent.ShowSnackbar(
-                                message = result.movieError.message ?: "Unknown Error"
+                                message = result.exception.message ?: "Unknown Error"
                             )
                         )
                     }
@@ -62,9 +63,12 @@ class MovieListViewModel : ViewModel() {
     }
 }
 
+data class MovieListState(
+    val movies: List<Movie> = emptyList(),
+    val isLoading: Boolean = true
+)
+
 sealed class UiEvent {
     data class ShowSnackbar(val message: String) : UiEvent()
     data class OpenUrl(val url: String) : UiEvent()
-    // Anda bisa menambahkan event lain di sini, misal:
-    // data class ShowSnackbar(val message: String) : UiEvent()
 }

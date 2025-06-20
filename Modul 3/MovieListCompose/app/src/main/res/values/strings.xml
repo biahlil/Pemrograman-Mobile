@@ -3,6 +3,7 @@
     <string name="imdb">IMDB</string>
     <string name="detail">Detail</string>
     <string name="plot">Plot: </string>
+    <string name="loading">Loading....</string>">
 
     <string name="venom_title">Venom: Let There Be Carnage</string>
     <string name="venom_year">2021</string>

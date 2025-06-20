@@ -39,8 +39,8 @@ fun MovieCard(
     @StringRes titleText: Int,
     @StringRes yearText: Int,
     @StringRes descriptionText: Int,
-    @StringRes url: Int,
     detailOnclick: () -> Unit,
+    openBrowserClick: () -> Unit,
 
     modifier: Modifier = Modifier
 ) {
@@ -69,14 +69,13 @@ fun MovieCard(
                     .clip(RoundedCornerShape(16.dp))
             )
             CardDetails(
-                url = url,
+                openBrowserClick = openBrowserClick,
                 detailOnclick = detailOnclick,
                 titleText = titleText,
                 yearText = yearText,
                 descriptionText = descriptionText,
                 modifier = Modifier
                     .fillMaxWidth()
-//                    .padding(top = 4.dp)
             )
         }
     }
@@ -85,9 +84,9 @@ fun MovieCard(
 @Composable
 fun CardDetails(
     detailOnclick: () -> Unit,
+    openBrowserClick: () -> Unit,
     @StringRes titleText: Int,
     @StringRes yearText: Int,
-    @StringRes url: Int,
     @StringRes descriptionText: Int,
     modifier: Modifier = Modifier
 ) {
@@ -142,8 +141,7 @@ fun CardDetails(
             )
         ) {
             OpenUrlButton(
-                // Buat URL secara dinamis berdasarkan ID film
-                url = stringResource(url),
+                openBrowserClick = openBrowserClick,
                 displayText = R.string.imdb,
                 modifier = modifier
                     .weight(1f)
@@ -182,8 +180,8 @@ private fun MovieCardPrev() {
                     titleText = R.string.venom_title,
                     yearText = R.string.venom_year,
                     descriptionText = R.string.venom_detail,
-                    url = R.string.venom_imdb,
-                    detailOnclick = {}
+                    detailOnclick = {},
+                    openBrowserClick = {}
                 )
             }
         }
