@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Struktur yang Benar: FrameLayout sebagai root untuk menumpuk
+    RecyclerView dan ProgressBar.
+-->
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.movielist.MovieListFragment">
+
+    <!-- 1. RecyclerView sekarang menjadi anak langsung dari FrameLayout. -->
+    <!-- Ukurannya match_parent agar mengisi seluruh layar. -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_movies"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/app_name"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_movie" />
+
+    <!-- 2. ProgressBar akan ditumpuk di atas RecyclerView di tengah. -->
+    <ProgressBar
+        android:id="@+id/list_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+</FrameLayout>

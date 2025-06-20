@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ... style lain yang mungkin sudah ada ... -->
+
+    <!-- Style untuk sudut tumpul dengan radius 8dp -->
+    <style name="ShapeAppearance.App.CornerSize8dp" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+    </style>
+
+</resources>
