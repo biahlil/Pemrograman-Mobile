@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_movie_poster"
+            android:layout_width="120dp"
+            android:layout_height="180dp"
+            android:scaleType="centerCrop"
+            tools:src="@tools:sample/backgrounds/scenic"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.App.CornerSize8dp" />
+        <!-- Kontainer untuk teks dan tombol di sebelah kanan gambar -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="8dp">
+
+            <!-- 2. Gunakan RelativeLayout untuk menata judul dan tahun -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_movie_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@+id/tv_movie_year"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="Judul Film Yang Sangat Panjang Sekali" />
+
+                <TextView
+                    android:id="@+id/tv_movie_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="8dp"
+                    android:gravity="end"
+                    android:textColor="?android:attr/textColorSecondary"
+                    tools:text="2023" />
+            </RelativeLayout>
+
+            <!-- Deskripsi -->
+            <TextView
+                android:id="@+id/tv_movie_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:maxLines="3"
+                tools:text="Ini adalah deskripsi singkat film yang akan ditampilkan di sini, bisa beberapa baris." />
+
+            <!-- Spacer untuk mendorong tombol ke tengah secara vertikal -->
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:ignore="NestedWeights" />
+
+            <!-- 3. Kontainer tombol yang diposisikan di tengah secara horizontal -->
+            <LinearLayout
+                android:id="@+id/button_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal" >
+
+                <Button
+                    android:id="@+id/btn_item_browser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/imdb" />
+
+                <Button
+                    android:id="@+id/btn_item_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/detail" />
+            </LinearLayout>
+
+            <!-- Spacer lain untuk menyeimbangkan posisi tengah -->
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
