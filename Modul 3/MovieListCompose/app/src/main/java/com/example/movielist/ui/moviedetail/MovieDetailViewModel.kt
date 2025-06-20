@@ -12,6 +12,7 @@ import com.example.movielist.ui.movielist.UiEvent
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 
 class MovieDetailViewModel(
@@ -40,6 +41,7 @@ class MovieDetailViewModel(
                             movie = result.data,
                             isLoading = false
                         )
+                        Timber.tag("MovieDetailViewModel").i("Get into Movie Detail: ${_movieDetailState.value}")
                     }
 
                     is Result.Error -> {

@@ -1,6 +1,5 @@
 package com.example.movielist.ui.movielist
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -12,6 +11,7 @@ import com.example.movielist.domain.model.Movie
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 
 class MovieListViewModel(
@@ -36,7 +36,7 @@ class MovieListViewModel(
                 when (result) {
                     is Result.Success<List<Movie>> -> {
                         _movieListState.value = MovieListState(movies = result.data, isLoading = false)
-                        Log.d("MovieListViewModel", "getAllMovies: ${_movieListState.value}")
+                        Timber.tag("MovieListViewModel").i("Movies: ${_movieListState.value}")
 
                     }
                     is Result.Error -> {
@@ -56,6 +56,7 @@ class MovieListViewModel(
         viewModelScope.launch {
             if (url.isNotBlank()) {
                 _eventFlow.emit(UiEvent.OpenUrl(url))
+                Timber.tag("MovieListViewModel").i("intent into URL: $url")
             } else {
                 _eventFlow.emit(UiEvent.ShowSnackbar("URL is not valid"))
             }

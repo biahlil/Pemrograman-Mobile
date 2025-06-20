@@ -14,6 +14,7 @@ lifecycle-compose = "2.9.0"
 logbackClassic = "1.5.6"
 navigationCompose = "2.9.0"
 runtimeLivedata = "1.8.2"
+timber = "5.0.1"
 uiTextGoogleFonts = "1.8.2"
 
 [libraries]
@@ -40,6 +41,7 @@ ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktorClien
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorClientCore" }
 lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle-compose" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logbackClassic" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

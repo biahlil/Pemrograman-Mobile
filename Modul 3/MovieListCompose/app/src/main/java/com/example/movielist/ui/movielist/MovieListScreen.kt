@@ -3,7 +3,6 @@ package com.example.movielist.ui.movielist
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -31,6 +30,7 @@ import com.example.movielist.domain.model.Movie
 import com.example.movielist.ui.components.MovieCard
 import com.example.movielist.ui.theme.MovieListTheme
 import kotlinx.coroutines.flow.collectLatest
+import timber.log.Timber
 
 @Composable
 fun MovieListScreen(
@@ -56,7 +56,8 @@ fun MovieListScreen(
                         val intent = Intent(Intent.ACTION_VIEW, event.url.toUri())
                         context.startActivity(intent)
                     } catch (e: ActivityNotFoundException) {
-                        Log.e("MovieListScreen", "Error opening URL: ${e.message} ${event.url}")
+                        Timber.tag("MovieListScreen")
+                            .e("Error opening URL: ${e.message} ${event.url}")
                     }
                 }
             }
@@ -89,9 +90,11 @@ fun MovieListScreen(
                             openBrowserClick = {
                                 viewModel.onOpenUrlClicked(imdbUrl)
                             },
-                            detailOnclick = { detailOnclick(movie) }
+                            detailOnclick = {
+                                detailOnclick(movie)
+                            }
                         )
-                        Log.d("Movie Property", "${movie.id}")
+                        Timber.tag("MovieProperty").d("Movie Detail: $movie")
                     }
                 }
             }

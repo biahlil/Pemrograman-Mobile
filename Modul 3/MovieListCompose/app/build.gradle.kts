@@ -47,6 +47,7 @@ android {
 dependencies {
 
     implementation(libs.logback.classic)
+    implementation(libs.timber)
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)
     implementation(libs.androidx.lifecycle.viewmodel)

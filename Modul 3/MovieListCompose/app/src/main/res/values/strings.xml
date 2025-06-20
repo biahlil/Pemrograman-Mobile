@@ -33,6 +33,6 @@
     <string name="castle_title">Howl\'s Moving Castle</string>
     <string name="castle_year">2004</string>
     <string name="castle_detail">A timid young woman cursed into an old body must turn to a self‑indulgent yet insecure wizard and his ragtag companions in a moving castle to break the spell.</string>
-    <string name="castle_imdb">https://www.imdb.com/title/tt0347149/plotsummary/</string>
+    <string name="castle_imdb">https://www.imdb.com/title/tt0347149/</string>
 
 </resources>
