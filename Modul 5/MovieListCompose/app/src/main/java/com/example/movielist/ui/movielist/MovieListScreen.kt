@@ -22,10 +22,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import com.example.movielist.data.repository.fake.FakeMovieRepository
 import com.example.movielist.domain.model.Movie
 import com.example.movielist.ui.components.MovieCard
 import com.example.movielist.ui.theme.MovieListTheme
@@ -72,7 +72,6 @@ fun MovieListScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            // Tampilkan loading
             if (state.isLoading) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             } else {
@@ -81,14 +80,13 @@ fun MovieListScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(state.movies) { movie ->
-                        val imdbUrl = stringResource(movie.imdbLink)
                         MovieCard(
-                            image = movie.image,
-                            titleText = movie.titleText,
-                            yearText = movie.yearText,
-                            descriptionText = movie.descriptionText,
+                            image = movie.imageUrl,
+                            titleText = movie.title,
+                            yearText = movie.year,
+                            descriptionText = movie.description,
                             openBrowserClick = {
-                                viewModel.onOpenUrlClicked(imdbUrl)
+                                viewModel.onOpenUrlClicked(movie.imdbURL.toString())
                             },
                             detailOnclick = {
                                 detailOnclick(movie)
@@ -108,7 +106,7 @@ fun MovieListScreen(
 private fun MovieListScreenPrev() {
     MovieListTheme(darkTheme = true) {
         Surface {
-            MovieListScreen(viewModel = MovieListViewModel(), detailOnclick = {})
+            MovieListScreen(viewModel = MovieListViewModel(FakeMovieRepository(LocalContext.current)), detailOnclick = {})
         }
     }
 }

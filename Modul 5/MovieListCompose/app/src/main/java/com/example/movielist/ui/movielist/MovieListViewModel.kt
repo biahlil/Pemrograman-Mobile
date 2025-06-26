@@ -8,6 +8,8 @@ import kotlinx.coroutines.launch
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.example.movielist.data.Result
+import com.example.movielist.ui.moviedetail.MovieDetailUiState
+import com.example.movielist.ui.movielist.UiEvent.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -43,11 +45,13 @@ class MovieListViewModel @Inject constructor(
                     is Result.Error -> {
                         _movieListState.value = MovieListState(isLoading = false)
                         _eventFlow.emit(
-                            UiEvent.ShowSnackbar(
+                            ShowSnackbar(
                                 message = result.exception.message ?: "Unknown Error"
                             )
                         )
                     }
+                    is Result.Loading -> MovieDetailUiState.Loading
+
                 }
             }
         }

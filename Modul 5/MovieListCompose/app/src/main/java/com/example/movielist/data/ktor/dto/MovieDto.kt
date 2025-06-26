@@ -6,18 +6,27 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class MovieDto(
-    @SerialName("id")       val id: Int,
-    @SerialName("title")       val title: String,
-    @SerialName("overview")    val overview: String,
-    @SerialName("poster_path") val posterPath: String,
-    @SerialName("release_date")val releaseDate: String,
+    @SerialName("id")
+    val id: Int,
 
-    ) {
-    fun toDomain() = Movie(
-        id = id.toString(),
-        imageUrl = "https://image.tmdb.org/t/p/original$posterPath",
-        titleText = title,
-        yearText = releaseDate,
-        descriptionText = overview
+    @SerialName("title")
+    val title: String?,
+
+    @SerialName("overview")
+    val overview: String?,
+
+    @SerialName("poster_path")
+    val posterPath: String?,
+
+    @SerialName("release_date")
+    val releaseDate: String?,
+
+    @SerialName("imdb_id")
+    val imdbId: String?
     )
-}
+
+@Serializable
+data class MovieListResponseDto(
+    @SerialName("results")
+    val listMovie: List<MovieDto>,
+)

@@ -2,8 +2,10 @@ package com.example.movielist.ui.moviedetail
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+
 import com.example.movielist.data.repository.MovieRepository
 import com.example.movielist.data.Result
 import com.example.movielist.domain.model.Movie
@@ -11,57 +13,53 @@ import com.example.movielist.ui.movielist.UiEvent
 import com.example.movielist.ui.movielist.UiEvent.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailViewModel @Inject constructor(
-    private val repository: MovieRepository
+    private val repository: MovieRepository,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    private val _movieDetailState = mutableStateOf(MovieDetailState())
-    val movieDetailState: State<MovieDetailState> = _movieDetailState
 
-    private val _eventFlow = MutableSharedFlow<UiEvent.ShowSnackbar>()
-    val eventFlow = _eventFlow.asSharedFlow()
+    private val _uiState = MutableStateFlow<MovieDetailUiState>(MovieDetailUiState.Loading)
+    val uiState = _uiState.asStateFlow()
+
+    init {
+        // Ambil movieId dari argumen yang dikirim oleh NavHost
+        val movieId: String? = savedStateHandle["movieId"]
+
+        movieId?.toIntOrNull()?.let { id ->
+            repository.getMovie(id)
+        } ?: run {
+            _uiState.value = MovieDetailUiState.Error("ID Film tidak valid.")
+        }
+    }
 
     fun getMovieDetail(id: Int?) {
-        if (id == null) {
-            viewModelScope.launch {
-                _eventFlow.emit(UiEvent.ShowSnackbar("Movie ID tidak valid."))
-            }
-            return
-        }
         viewModelScope.launch {
-            _movieDetailState.value = MovieDetailState(isLoading = true)
 
             repository.getMovie(id).collect { result ->
-                when (result) {
-                    is  Result.Success -> {
-                        _movieDetailState.value = MovieDetailState(
-                            movie = result.data,
-                            isLoading = false
-                        )
-                        Timber.tag("MovieDetailViewModel").i("Get into Movie Detail: ${_movieDetailState.value}")
+                _uiState.value = when (result) {
+                    is Result.Loading -> MovieDetailUiState.Loading
+                    is Result.Success -> {
+                        MovieDetailUiState.Success(result.data)
                     }
-
                     is Result.Error -> {
-                        _movieDetailState.value = MovieDetailState(isLoading = false)
-                        _eventFlow.emit(
-                            ShowSnackbar(
-                                message = result.exception.message ?: "Movie not found"
-                            )
-                        )
+                        MovieDetailUiState.Error(result.exception.message ?: "Terjadi error yang tidak diketahui")
                     }
-
                 }
             }
         }
     }
 }
 
-data class MovieDetailState(
-    val movie: Movie? = null,
-    val isLoading: Boolean = true
-)
+sealed interface MovieDetailUiState {
+    data object Loading : MovieDetailUiState
+    data class Success(val movie: Movie) : MovieDetailUiState
+    data class Error(val message: String) : MovieDetailUiState
+}

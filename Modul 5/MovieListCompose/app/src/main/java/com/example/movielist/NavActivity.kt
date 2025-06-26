@@ -41,16 +41,12 @@ fun AppNavHost(modifier: Modifier = Modifier) {
         composable(
             route = MOVIE_DETAIL_WITH_ARG,
             arguments = listOf(navArgument("movieId") { type = NavType.StringType })
-        ) { backStackEntry ->
+        ) {
             val movieDetailViewModel: MovieDetailViewModel = hiltViewModel()
-            val movieId = backStackEntry.arguments?.getString("movieId")?.toIntOrNull()
-            if (movieId != null) {
                 MovieDetailScreen(
                     viewModel = movieDetailViewModel,
-                    idMovie = movieId,
                     onBack = { navController.popBackStack() }
                 )
             }
-        }
     }
 }
