@@ -3,18 +3,20 @@ package com.example.movielist.ui.movielist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movielist.data.repository.MovieRepository
-import com.example.movielist.data.repository.fake.FakeMovieRepository
 import com.example.movielist.domain.model.Movie
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import com.example.movielist.data.Result
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import timber.log.Timber
+import javax.inject.Inject
 
-class MovieListViewModel(
-    val movieRepository : MovieRepository = FakeMovieRepository()
+@HiltViewModel
+class MovieListViewModel @Inject constructor(
+    private val repository: MovieRepository
 ) : ViewModel() {
 
     private val _eventFlow = MutableSharedFlow<UiEvent>()
@@ -31,7 +33,7 @@ class MovieListViewModel(
         viewModelScope.launch {
             _movieListState.value = MovieListState(isLoading = true)
 
-            movieRepository.getAllMovies().collect { result ->
+            repository.getAllMovies().collect { result ->
                 when (result) {
                     is Result.Success<List<Movie>> -> {
                         _movieListState.value = MovieListState(movies = result.data, isLoading = false)

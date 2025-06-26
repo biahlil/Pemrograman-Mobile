@@ -2,7 +2,9 @@ package com.example.movielist
 
 import android.app.Application
 import timber.log.Timber
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class MyMovieApplication : Application() {
     override fun onCreate() {
         super.onCreate()

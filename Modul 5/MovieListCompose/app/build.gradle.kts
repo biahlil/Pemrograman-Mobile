@@ -2,7 +2,10 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.hilt.android.gradle)
+    alias(libs.plugins.ksp)
 }
+
 
 android {
     namespace = "com.example.movielist"
@@ -14,7 +17,6 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -37,6 +39,7 @@ android {
     buildFeatures {
         compose = true
     }
+
     packagingOptions {
         resources {
             excludes += "META-INF/INDEX.LIST"
@@ -48,7 +51,6 @@ android {
 dependencies {
 
     //    Timber
-    implementation(libs.logback.classic)
     implementation(libs.timber)
 
     //    Ktor
@@ -58,6 +60,11 @@ dependencies {
     implementation(libs.ktor.content.neg)
     implementation(libs.ktor.serialization)
     implementation(libs.ktor.logging)
+
+    //     Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     //    Androidx & Compose
     implementation(libs.kotlinx.serialization)

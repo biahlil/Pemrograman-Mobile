@@ -5,43 +5,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movielist.data.repository.MovieRepository
-import com.example.movielist.data.repository.fake.FakeMovieRepository
 import com.example.movielist.data.Result
 import com.example.movielist.domain.model.Movie
 import com.example.movielist.ui.movielist.UiEvent
 import com.example.movielist.ui.movielist.UiEvent.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
-//class MovieDetailViewModel : ViewModel() {
-//    private val movieRepository: MovieRepository = FakeMovieRepository()
-//    private val _movie = MutableLiveData<Movie>()
-//    val movie: LiveData<Movie> = _movie
-//    private val _isLoading = MutableLiveData<Boolean>()
-//    val isLoading: LiveData<Boolean> = _isLoading
-//    private val _isError = MutableLiveData<Boolean>()
-//    val isError: LiveData<Boolean> = _isError
-//    fun getMovie(id: Int) {
-//        viewModelScope.launch {
-//            _isLoading.value = true
-//            _isError.value = false
-//            val result = movieRepository.getMovie(id)
-//            if (result.isSuccess) {
-//                _movie.value = result.data
-//                Log.d("MovieListViewModel", "getMovie: ${_movie.value}")
-//            }
-//        }
-//    }
-//
-//}
-
-
-
-
-class MovieDetailViewModel(
-    private val movieRepository: MovieRepository = FakeMovieRepository(),
+@HiltViewModel
+class MovieDetailViewModel @Inject constructor(
+    private val repository: MovieRepository
 ) : ViewModel() {
     private val _movieDetailState = mutableStateOf(MovieDetailState())
     val movieDetailState: State<MovieDetailState> = _movieDetailState
@@ -59,7 +36,7 @@ class MovieDetailViewModel(
         viewModelScope.launch {
             _movieDetailState.value = MovieDetailState(isLoading = true)
 
-            movieRepository.getMovie(id).collect { result ->
+            repository.getMovie(id).collect { result ->
                 when (result) {
                     is  Result.Success -> {
                         _movieDetailState.value = MovieDetailState(
