@@ -2,17 +2,18 @@ package com.example.movielist.ui.movielist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.movielist.data.Result
 import com.example.movielist.data.repository.MovieRepository
 import com.example.movielist.domain.model.Movie
-import kotlinx.coroutines.launch
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import com.example.movielist.data.Result
-import com.example.movielist.ui.moviedetail.MovieDetailUiState
-import com.example.movielist.ui.movielist.UiEvent.*
+import com.example.movielist.ui.movielist.UiEvent.OpenUrl
+import com.example.movielist.ui.movielist.UiEvent.ShowSnackbar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -24,34 +25,36 @@ class MovieListViewModel @Inject constructor(
     private val _eventFlow = MutableSharedFlow<UiEvent>()
     val eventFlow = _eventFlow.asSharedFlow()
 
-    private val _movieListState = mutableStateOf(MovieListState())
-    val movieListState: State<MovieListState> = _movieListState
+    // [PERBAIKAN] Menggunakan StateFlow dan sealed interface untuk UI State yang lebih jelas.
+    private val _uiState = MutableStateFlow<MovieListUiState>(MovieListUiState.Loading)
+    val uiState = _uiState.asStateFlow()
 
     init {
         getAllMovies()
     }
 
-    fun getAllMovies() {
+    private fun getAllMovies() {
         viewModelScope.launch {
-            _movieListState.value = MovieListState(isLoading = true)
-
             repository.getAllMovies().collect { result ->
                 when (result) {
-                    is Result.Success<List<Movie>> -> {
-                        _movieListState.value = MovieListState(movies = result.data, isLoading = false)
-                        Timber.tag("MovieListViewModel").i("Movies: ${_movieListState.value}")
-
+                    is Result.Loading -> {
+                        Timber.tag("MovieListViewModel").d("Result: $result")
+                        if (_uiState.value !is MovieListUiState.Success) {
+                            _uiState.update {
+                                if (result.isLoading) MovieListUiState.Loading else it
+                            }
+                        }
                     }
                     is Result.Error -> {
-                        _movieListState.value = MovieListState(isLoading = false)
-                        _eventFlow.emit(
-                            ShowSnackbar(
-                                message = result.exception.message ?: "Unknown Error"
-                            )
-                        )
+                        Timber.tag("MovieListViewModel").d("Result: $result")
+                        _uiState.update { MovieListUiState.Error(result.exception.message ?: "Unknown Error") }
+                        _eventFlow.emit(ShowSnackbar(result.exception.message ?: "Unknown Error"))
                     }
-                    is Result.Loading -> MovieDetailUiState.Loading
-
+                    is Result.Success -> {
+                        Timber.tag("MovieListViewModel").d("Result: $result")
+                        Timber.tag("MovieListViewModel").d("Movies: ${result.data}")
+                        _uiState.update { MovieListUiState.Success(movies = result.data) }
+                    }
                 }
             }
         }
@@ -60,19 +63,20 @@ class MovieListViewModel @Inject constructor(
     fun onOpenUrlClicked(url: String) {
         viewModelScope.launch {
             if (url.isNotBlank()) {
-                _eventFlow.emit(UiEvent.OpenUrl(url))
+                _eventFlow.emit(OpenUrl(url))
                 Timber.tag("MovieListViewModel").i("intent into URL: $url")
             } else {
-                _eventFlow.emit(UiEvent.ShowSnackbar("URL is not valid"))
+                _eventFlow.emit(ShowSnackbar("URL is not valid"))
             }
         }
     }
 }
 
-data class MovieListState(
-    val movies: List<Movie> = emptyList(),
-    val isLoading: Boolean = true
-)
+sealed interface MovieListUiState {
+    data object Loading : MovieListUiState
+    data class Success(val movies: List<Movie>) : MovieListUiState
+    data class Error(val message: String) : MovieListUiState
+}
 
 sealed class UiEvent {
     data class ShowSnackbar(val message: String) : UiEvent()

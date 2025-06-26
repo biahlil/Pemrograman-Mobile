@@ -1,7 +1,6 @@
 package com.example.movielist.data.ktor
 
 import com.example.movielist.data.ktor.dto.MovieDetailDto
-import com.example.movielist.data.ktor.dto.MovieDto
 import com.example.movielist.data.ktor.dto.MovieListResponseDto
 
 import io.ktor.client.*
@@ -9,7 +8,6 @@ import io.ktor.client.call.*
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import kotlinx.serialization.SerializationException
 import timber.log.Timber
 
 class ApiServiceImpl(
@@ -18,7 +16,8 @@ class ApiServiceImpl(
 
     override suspend fun getDiscoverMovies(): MovieListResponseDto {
         return try {
-            client.get("/discover/movie") {
+
+            client.get("/3/discover/movie") {
                 url {
                     parameters.append("include_adult", "false")
                     parameters.append("include_video", "false")
@@ -26,11 +25,11 @@ class ApiServiceImpl(
                     parameters.append("sort_by", "popularity.desc")
                     parameters.append("include_video", "false")
                     parameters.append("with_genres", "16")
-                    parameters.append("page", "1")
                 }
                 accept(ContentType.Application.Json)
                 Timber.tag("ApiService").d("Berhasil mengambil daftar film")
             }.body()
+
         } catch (e: Exception) {
             Timber.tag("ApiService").e(e, "Error saat mengambil daftar film")
             MovieListResponseDto(emptyList())
@@ -38,9 +37,9 @@ class ApiServiceImpl(
     }
 
 
-    override suspend fun getMovieDetail(id: Int): MovieDto? {
+    override suspend fun getMovieDetail(id: Int): MovieDetailDto? {
         return try {
-            client.get("movie/$id") {
+            client.get("/3/movie/$id") {
                 url {
                     parameters.append("language", "en-US")
                 }

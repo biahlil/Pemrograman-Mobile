@@ -126,6 +126,8 @@ fun CardDetails(
             )
             Text(
                 text = descriptionText,
+                maxLines = 5,
+                overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurface
             )
