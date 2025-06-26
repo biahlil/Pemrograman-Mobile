@@ -1,11 +1,10 @@
 package com.example.movielist.data
 
-import com.example.movielist.domain.model.MovieError
+sealed class Result<out R> {
+    data class Success<out T>(val data: T) : Result<T>()
+    data class Error(val exception: Exception) : Result<Nothing>()
+}
 
-data class ResultOrError<out T>(
-    val data: T? = null,
-    val error: MovieError? = null
-) {
-    val isSuccess: Boolean
-        get() = (data != null && error == null)
+fun <T> Result<T>.successOr(fallback: T): T {
+    return (this as? Result.Success<T>)?.data ?: fallback
 }

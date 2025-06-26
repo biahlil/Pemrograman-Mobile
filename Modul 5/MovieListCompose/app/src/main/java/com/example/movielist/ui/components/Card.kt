@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,16 +24,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.movielist.ui.theme.MovieListTheme
 import com.example.movielist.R
+import com.example.movielist.ui.theme.MovieListTheme
 
 @Composable
 fun MovieCard(
@@ -44,7 +40,7 @@ fun MovieCard(
     @StringRes yearText: Int,
     @StringRes descriptionText: Int,
     detailOnclick: () -> Unit,
-    imdbOnclick: () -> Unit,
+    openBrowserClick: () -> Unit,
 
     modifier: Modifier = Modifier
 ) {
@@ -73,14 +69,13 @@ fun MovieCard(
                     .clip(RoundedCornerShape(16.dp))
             )
             CardDetails(
-                imdbOnclick = imdbOnclick,
+                openBrowserClick = openBrowserClick,
                 detailOnclick = detailOnclick,
                 titleText = titleText,
                 yearText = yearText,
                 descriptionText = descriptionText,
                 modifier = Modifier
                     .fillMaxWidth()
-//                    .padding(top = 4.dp)
             )
         }
     }
@@ -88,8 +83,8 @@ fun MovieCard(
 
 @Composable
 fun CardDetails(
-    imdbOnclick: () -> Unit,
     detailOnclick: () -> Unit,
+    openBrowserClick: () -> Unit,
     @StringRes titleText: Int,
     @StringRes yearText: Int,
     @StringRes descriptionText: Int,
@@ -145,20 +140,13 @@ fun CardDetails(
                 alignment = Alignment.End
             )
         ) {
-            Button(
-                onClick = imdbOnclick,
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.primary
-                ),
-                contentPadding = PaddingValues(3.dp),
+            OpenUrlButton(
+                openBrowserClick = openBrowserClick,
+                displayText = R.string.imdb,
                 modifier = modifier
                     .weight(1f)
                     .height(45.dp)
-
-            ) { Text(text = stringResource(R.string.imdb),
-                style = MaterialTheme.typography.labelMedium,
-                ) }
+            )
             Button(
                 onClick = detailOnclick,
                 colors = ButtonDefaults.buttonColors(
@@ -171,7 +159,7 @@ fun CardDetails(
                     .height(45.dp)
             ) { Text(text = stringResource(R.string.detail),
                 style = MaterialTheme.typography.labelMedium,
-                ) }
+            ) }
         }
     }
 }
@@ -192,8 +180,8 @@ private fun MovieCardPrev() {
                     titleText = R.string.venom_title,
                     yearText = R.string.venom_year,
                     descriptionText = R.string.venom_detail,
-                    imdbOnclick = {},
-                    detailOnclick = {}
+                    detailOnclick = {},
+                    openBrowserClick = {}
                 )
             }
         }
