@@ -1,26 +1,35 @@
 [versions]
 agp = "8.9.3"
+coilCompose = "2.6.0"
+hiltNavigationCompose = "1.2.0"
 kotlin = "2.0.21"
 coreKtx = "1.16.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-ktorClientCio = "3.1.3"
-ktorClientCore = "3.1.3"
+ktorClientCio = "2.3.11"
+ktorClientCore = "2.3.11"
 lifecycleRuntimeKtx = "2.9.1"
 activityCompose = "1.10.1"
 composeBom = "2025.06.00"
 lifecycle-compose = "2.9.1"
 logbackClassic = "1.5.6"
 navigationCompose = "2.9.0"
+roomVersion = "2.7.2"
 runtimeLivedata = "1.8.2"
+slf4jAndroid = "1.7.36"
 uiTextGoogleFonts = "1.8.2"
+timber = "5.0.1"
 kotlinx-serialization = "1.6.0"
+hilt = "2.52"
+ksp = "2.0.21-1.0.28"
+
 
 [libraries]
-ktor-content-neg     = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktorClientCore" }
-ktor-serialization   = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorClientCore" }
-ktor-logging         = { module = "io.ktor:ktor-client-logging", version.ref = "ktorClientCore" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomVersion" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomVersion" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 kotlinx-serialization= { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-livedata = { module = "androidx.lifecycle:lifecycle-livedata", version.ref = "lifecycleRuntimeKtx" }
@@ -41,13 +50,27 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle-compose" }
+
+# Timber
+slf4j-android = { module = "org.slf4j:slf4j-android", version.ref = "slf4jAndroid" }
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+
+# Ktor
+ktor-content-neg     = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktorClientCore" }
+ktor-serialization   = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorClientCore" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktorClientCio" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorClientCore" }
-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle-compose" }
-logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logbackClassic" }
+
+# Hilt
+hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+hilt-android-gradle = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 

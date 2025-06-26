@@ -1,18 +1,19 @@
 package com.example.movielist.data.repository.fake
 
 import com.example.movielist.R
+import com.example.movielist.domain.model.FakeMovie
 import com.example.movielist.domain.model.Movie
 
-val venom = Movie(
+val venom = FakeMovie(
     0,
     R.drawable.venom_cover,
     R.string.venom_title,
     R.string.venom_year,
     R.string.venom_detail,
     R.string.venom_imdb
-)
+    )
 
-val kiki = Movie(
+val kiki = FakeMovie(
     1,
     R.drawable.kiki_cover,
     R.string.kiki_title,
@@ -21,7 +22,7 @@ val kiki = Movie(
     R.string.kiki_imdb
 )
 
-val dayLater = Movie(
+val dayLater = FakeMovie(
     2,
     R.drawable.day_cover,
     R.string.day_title,
@@ -30,7 +31,7 @@ val dayLater = Movie(
     R.string.day_imdb
 )
 
-val turningRed = Movie(
+val turningRed = FakeMovie(
     3,
     R.drawable.red_cover,
     R.string.red_title,
@@ -39,7 +40,7 @@ val turningRed = Movie(
     R.string.red_imdb
 )
 
-val vhs = Movie(
+val vhs = FakeMovie(
     4,
     R.drawable.vhs_cover,
     R.string.vhs_title,
@@ -48,7 +49,7 @@ val vhs = Movie(
     R.string.vhs_imdb
 )
 
-val castle = Movie(
+val castle = FakeMovie(
     5,
     R.drawable.castle_cover,
     R.string.castle_title,
@@ -56,3 +57,4 @@ val castle = Movie(
     R.string.castle_detail,
     R.string.castle_imdb
 )
+

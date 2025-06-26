@@ -4,14 +4,10 @@ import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.defaultRequest
-import io.ktor.client.plugins.logging.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.util.appendIfNameAbsent
 import kotlinx.serialization.json.Json
 
-/**
- * Provides a single, shared HttpClient configured with JSON and logging.
- */
 object KtorClientProvider {
     val httpClient: HttpClient by lazy {
         HttpClient(CIO) {
@@ -21,9 +17,6 @@ object KtorClientProvider {
                         ignoreUnknownKeys = true
                     }
                 )
-            }
-            install(Logging) {
-                level = LogLevel.BODY
             }
             engine {
                 requestTimeout = 15_000

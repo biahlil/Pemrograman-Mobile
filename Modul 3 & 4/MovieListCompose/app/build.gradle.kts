@@ -46,10 +46,15 @@ android {
 
 dependencies {
 
-    implementation(libs.logback.classic)
+//    Timber
     implementation(libs.timber)
+
+//    Ktor
     implementation(libs.ktor.client.core)
+    implementation(libs.logback.classic)
     implementation(libs.ktor.client.cio)
+
+//    Androidx & Compose
     implementation(libs.androidx.lifecycle.viewmodel)
     implementation (libs.androidx.navigation.compose)
     implementation(libs.androidx.runtime.livedata)
@@ -64,6 +69,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.lifecycle.runtime.compose)
+
+//    Test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

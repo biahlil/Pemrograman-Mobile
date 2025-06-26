@@ -2,7 +2,11 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.hilt.android.gradle)
+    alias(libs.plugins.ksp)
+    kotlin("plugin.serialization") version "1.9.24"
 }
+
 
 android {
     namespace = "com.example.movielist"
@@ -14,7 +18,6 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -37,16 +40,40 @@ android {
     buildFeatures {
         compose = true
     }
+
+    packagingOptions {
+        resources {
+            excludes += "META-INF/INDEX.LIST"
+        }
+    }
+
 }
 
 dependencies {
-    implementation(libs.ktor.content.neg)
-    implementation(libs.ktor.serialization)
-    implementation(libs.ktor.logging)
-    implementation(libs.kotlinx.serialization)
-    implementation(libs.logback.classic)
+
+    //    Timber
+    implementation(libs.timber)
+
+    //    Ktor
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.content.neg)
+    implementation(libs.ktor.serialization)
+
+
+    //     Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+
+//    Rooom
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
+    //    Androidx & Compose
+    implementation(libs.kotlinx.serialization)
     implementation(libs.androidx.lifecycle.viewmodel)
     implementation (libs.androidx.navigation.compose)
     implementation(libs.androidx.runtime.livedata)
@@ -61,6 +88,9 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.lifecycle.runtime.compose)
+    implementation(libs.coil.compose)
+
+//    Test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
