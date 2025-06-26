@@ -27,7 +27,7 @@ object KtorClientProvider {
             }
             // Configure default request parameters
             defaultRequest {
-                 url("https://api.themoviedb.org/3/")
+                 url("https://api.themoviedb.org")
                 headers.appendIfNameAbsent("Accept", "application/json")
                 headers.appendIfNameAbsent("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwZGJkZGQ5MjBlM2FkNDU0M2RkN2ZlYjNmOWI2YzViMCIsIm5iZiI6MTc0OTAxODExNS44NzYsInN1YiI6IjY4M2ZlNjAzMDUzNjE5YTdhZGZkYmVlMCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.BBXzrwJuk_3W0YFiosG7wZ9uP_Ll5Zi93ZpQBd4M7iA")
             }

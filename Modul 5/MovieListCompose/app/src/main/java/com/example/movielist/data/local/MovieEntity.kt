@@ -11,5 +11,5 @@ data class MovieEntity(
     val overview: String,
     val posterPath: String,
     val releaseDate: String,
-    val imdbId: String
+    val imdbId: String? = null
 )

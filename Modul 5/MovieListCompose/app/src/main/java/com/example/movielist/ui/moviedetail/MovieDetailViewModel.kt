@@ -1,23 +1,15 @@
 package com.example.movielist.ui.moviedetail
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-
-import com.example.movielist.data.repository.MovieRepository
 import com.example.movielist.data.Result
+import com.example.movielist.data.repository.MovieRepository
 import com.example.movielist.domain.model.Movie
-import com.example.movielist.ui.movielist.UiEvent
-import com.example.movielist.ui.movielist.UiEvent.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,11 +22,10 @@ class MovieDetailViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        // Ambil movieId dari argumen yang dikirim oleh NavHost
         val movieId: String? = savedStateHandle["movieId"]
 
         movieId?.toIntOrNull()?.let { id ->
-            repository.getMovie(id)
+            getMovieDetail(id)
         } ?: run {
             _uiState.value = MovieDetailUiState.Error("ID Film tidak valid.")
         }
@@ -42,7 +33,6 @@ class MovieDetailViewModel @Inject constructor(
 
     fun getMovieDetail(id: Int?) {
         viewModelScope.launch {
-
             repository.getMovie(id).collect { result ->
                 _uiState.value = when (result) {
                     is Result.Loading -> MovieDetailUiState.Loading

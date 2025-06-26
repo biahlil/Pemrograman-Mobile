@@ -7,12 +7,12 @@ import com.example.movielist.data.repository.MovieRepository
 import com.example.movielist.data.toDomainMovie
 import com.example.movielist.data.toEntity
 import com.example.movielist.domain.model.Movie
-import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Singleton
 
 @Singleton
@@ -21,43 +21,39 @@ class MovieRepositoryImpl (
     private val dao: MovieDao
 ) : MovieRepository {
 
-    override fun getAllMovies(): Flow<Result<List<Movie>>> = flow {
-        emit(Result.Loading(true))
-
-        val cachedMovies = dao.getAllMovies().map { entities ->
-            entities.map { it.toDomainMovie() }
-        }
-
-        var isCacheEmitted = false
-        cachedMovies.collect { movies ->
-            if (movies.isNotEmpty()) {
-                isCacheEmitted = true
-                emit(Result.Success(movies))
-            }
-        }
+    override fun getAllMovies(): Flow<Result<List<Movie>>> = channelFlow  {
+        send(Result.Loading(true))
 
         try {
-            val initialMovies = api.getDiscoverMovies().listMovie
-            val detailedMovies = coroutineScope {
-                initialMovies.map { movieDto ->
-                    async {
-                        api.getMovieDetail(movieDto.id)
+            // 1. Ambil daftar film dari discover
+            val remoteMovies = api.getDiscoverMovies().results
+            val movieEntities = remoteMovies.map { it.toEntity() }
+            Timber.tag("MovieRepositoryImpl").d("getDiscoverMovies: $remoteMovies")
+            // 2. Simpan ke database dengan imdbId = null
+            dao.clearAll()
+            dao.insertAll(movieEntities)
+            Timber.tag("MovieRepositoryImpl").d("insertAll: $movieEntities")
+
+            // 3. Lakukan proses update di background
+            coroutineScope {
+                movieEntities.forEach { movie ->
+                    launch { // Lakukan untuk setiap film secara terpisah
+                        val detail = api.getMovieDetail(movie.id)
+                        Timber.tag("MovieRepositoryImpl").d("getMovieDetail: $detail")
+                        if (detail?.imdbId != null) {
+                            dao.updateImdbId(movie.id, detail.imdbId)
+                        }
                     }
-                }.awaitAll()
-            }
-
-            val movieEntities = detailedMovies.mapNotNull { detailDto ->
-                detailDto?.toEntity()
-            }
-
-            if (movieEntities.isNotEmpty()) {
-                dao.clearAll()
-                dao.insertAll(movieEntities)
+                }
             }
         } catch (e: Exception) {
-            if (!isCacheEmitted) {
-                emit(Result.Error(e))
-            }
+            send(Result.Error(e))
+        }finally {
+            send(Result.Loading(false))
+        }
+        dao.getAllMovies().collect { movies ->
+            Timber.tag("MovieRepositoryImpl").d("getAllMovies: $movies")
+            send(Result.Success(movies.map { it.toDomainMovie() }))
         }
     }
 
@@ -69,17 +65,22 @@ class MovieRepositoryImpl (
                 emit(Result.Error(Exception("Movie ID tidak valid.")))
                 return@flow
             }
-
             try {
-                val remoteMovieDto = api.getMovieDetail(postId)
-                if (remoteMovieDto != null) {
-                    val domainMovie = remoteMovieDto.toEntity().toDomainMovie()
-                    emit(Result.Success(domainMovie))
-                } else {
-                    emit(Result.Error(Exception("Film dengan ID $postId tidak ditemukan.")))
+                // Panggil DAO untuk mengambil data dari database
+                dao.getMovieById(postId).collect { entity ->
+                    if (entity != null) {
+                        // Jika entitas ditemukan, ubah ke domain model dan kirim ke UI
+                        emit(Result.Success(entity.toDomainMovie()))
+                    } else {
+                        // Jika tidak ada film dengan ID tersebut di database
+                        emit(Result.Error(Exception("Film dengan ID $postId tidak ditemukan di cache.")))
+                    }
                 }
-            } catch (e: Exception) {
+            }catch (e: Exception) {
                 emit(Result.Error(e))
+            }finally {
+                emit(Result.Loading(false))
+
             }
         }
     }
