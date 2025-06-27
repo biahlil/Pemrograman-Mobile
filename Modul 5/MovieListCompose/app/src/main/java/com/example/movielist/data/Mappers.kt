@@ -4,6 +4,7 @@ import com.example.movielist.data.ktor.dto.MovieFromListDto
 import com.example.movielist.data.local.MovieEntity
 import com.example.movielist.domain.model.Movie
 
+// Mengubah dari Network Model ke Entity (database)
 fun MovieFromListDto.toEntity(): MovieEntity {
     return MovieEntity(
         id = this.id,

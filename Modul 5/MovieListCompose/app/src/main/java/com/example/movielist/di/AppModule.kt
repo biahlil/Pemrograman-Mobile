@@ -9,7 +9,7 @@ import com.example.movielist.data.local.MovieDao
 import com.example.movielist.data.local.MovieDatabase
 import com.example.movielist.data.repository.MovieRepository
 import com.example.movielist.data.repository.fake.FakeMovieRepository
-import com.example.movielist.data.repository.network.MovieRepositoryImpl
+import com.example.movielist.data.repository.MovieRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
